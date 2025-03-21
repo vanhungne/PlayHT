@@ -7,200 +7,192 @@
     />
   </a>
 <p></p>
-<p>AI Powered Voice Generation Platform</p>
+<p>Nền Tảng Tạo Giọng Nói Bằng Trí Tuệ Nhân Tạo</p>
 
 </div>
 
 ---
 
-<!--
-[![GitHub Actions CI](https://github.com/playht/workflows/CI/badge.svg)](https://github.com/playht/actions?query=workflow%3ACI)
--->
-
 [![npm version](https://badge.fury.io/js/playht.svg)](https://www.npmjs.com/package/playht) [![Downloads](https://img.shields.io/npm/dm/playht.svg)](https://www.npmjs.com/package/playht)
 
 
-The PlayHT SDK provides easy to use methods to wrap the [PlayHT API](https://docs.play.ht/reference/api-getting-started).
+PlayHT SDK cung cấp các phương thức dễ sử dụng để làm việc với [PlayHT API](https://docs.play.ht/reference/api-getting-started).
 
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Mục Lục**
 
-**Table of Contents**
+- [Cách Sử Dụng](#cách-sử-dụng)
+  - [Khởi tạo thư viện](#khởi-tạo-thư-viện)
+  - [Tạo Giọng Nói](#tạo-giọng-nói)
+  - [Phát Trực Tiếp Giọng Nói](#phát-trực-tiếp-giọng-nói)
+  - [Các Tùy Chọn Tạo Giọng Nói](#các-tùy-chọn-tạo-giọng-nói)
+    - [Giọng Nói Play3.0-mini](#giọng-nói-play30-mini-khuyên-dùng)
+    - [Giọng Nói PlayHT 2.0](#giọng-nói-playht-20)
+    - [Giọng Nói PlayHT 1.0](#giọng-nói-playht-10)
+    - [Giọng Nói Tiêu Chuẩn](#giọng-nói-tiêu-chuẩn)
+  - [Liệt Kê Các Giọng Nói Hiện Có](#liệt-kê-các-giọng-nói-hiện-có)
+  - [Nhân Bản Tức Thì Một Giọng Nói](#nhân-bản-tức-thì-một-giọng-nói)
+    - [Xóa Một Giọng Nói Đã Nhân Bản](#xóa-một-giọng-nói-đã-nhân-bản)
+- [Ví Dụ SDK](#ví-dụ-sdk)
+  - [Ví Dụ Máy Chủ](#ví-dụ-máy-chủ)
+  - [Ví Dụ Tích Hợp ChatGPT](#ví-dụ-tích-hợp-chatgpt)
 
-- [Usage](#usage)
-  - [Initializing the library](#initializing-the-library)
-  - [Generating Speech](#generating-speech)
-  - [Streaming Speech](#streaming-speech)
-  - [Generating Speech Options](#generating-speech-options)
-    - [PlayHT 2.0 Voices](#playht-20-voices)
-    - [PlayHT 1.0 Voices](#playht-10-voices)
-    - [Standard Voices](#standard-voices)
-  - [Listing Available Voices](#listing-available-voices)
-  - [Instant Clone a Voice](#instant-clone-a-voice)
-    - [Deleting a Cloned Voice](#deleting-a-cloned-voice)
-- [SDK Examples](#sdk-examples)
-  - [Example Server](#example-server)
-  - [ChatGPT Integration Example](#chatgpt-integration-example)
+# Cách Sử Dụng
 
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
-# Usage
-
-This module is distributed via [npm](https://www.npmjs.com/) and should be installed as one of your project's dependencies:
+Module này được phân phối thông qua [npm](https://www.npmjs.com/) và nên được cài đặt như một trong các dependency của dự án của bạn:
 
 ```shell
 npm install --save playht
 ```
 
-or for installation with [yarn](https://yarnpkg.com/) package manager:
+hoặc cài đặt với trình quản lý gói [yarn](https://yarnpkg.com/):
 
 ```shell
 yarn add playht
 ```
 
-## Initializing the library
+## Khởi tạo thư viện
 
-Before using the SDK, you need to initialize the library with your credentials. You will need your API Secret Key and your User ID. If you already have a PlayHT account, navigate to the [API access page](https://play.ht/studio/api-access). For more details [see the API documentation](https://docs.play.ht/reference/api-authentication#generating-your-api-secret-key-and-obtaining-your-user-id).
+Trước khi sử dụng SDK, bạn cần khởi tạo thư viện với thông tin xác thực của bạn. Bạn sẽ cần Khóa Bí Mật API và ID Người Dùng của bạn. Nếu bạn đã có tài khoản PlayHT, hãy điều hướng đến [trang truy cập API](https://play.ht/studio/api-access). Để biết thêm chi tiết [xem tài liệu API](https://docs.play.ht/reference/api-authentication#generating-your-api-secret-key-and-obtaining-your-user-id).
 
-_**Important:** Keep your API Secret Key confidential. Do not share it with anyone or include it in publicly accessible code repositories._
+_**Quan trọng:** Giữ bí mật Khóa Bí Mật API của bạn. Không chia sẻ nó với bất kỳ ai hoặc đưa vào kho lưu trữ mã nguồn công khai._
 
-Import methods from the library and call `init()` with your credentials to set up the SDK:
+Nhập các phương thức từ thư viện và gọi `init()` với thông tin xác thực của bạn để thiết lập SDK:
 
 ```javascript
 import * as PlayHT from 'playht';
 
 PlayHT.init({
-  apiKey: '<YOUR API KEY>',
-  userId: '<YOUR API KEY>',
+  apiKey: '<KHÓA API CỦA BẠN>',
+  userId: '<ID NGƯỜI DÙNG CỦA BẠN>',
 });
 ```
 
-**_Note: All the examples below require that you call the init() method with your credentials first._**
+**_Lưu ý: Tất cả các ví dụ dưới đây yêu cầu bạn gọi phương thức init() với thông tin xác thực của bạn trước._**
 
-When initializing the library, you can also set a default voice and default voice engine to be used for any subsequent speech generation methods when a voice is not defined:
+Khi khởi tạo thư viện, bạn cũng có thể thiết lập giọng nói mặc định và công cụ giọng nói mặc định để sử dụng cho bất kỳ phương thức tạo giọng nói nào sau này khi không xác định giọng nói:
 
 ```javascript
 import * as PlayHT from 'playht';
 
 PlayHT.init({
-  apiKey: '<YOUR API KEY>',
-  userId: '<YOUR API KEY>',
+  apiKey: '<KHÓA API CỦA BẠN>',
+  userId: '<ID NGƯỜI DÙNG CỦA BẠN>',
   defaultVoiceId: 's3://peregrine-voices/oliver_narrative2_parrot_saad/manifest.json',
   defaultVoiceEngine: 'Play3.0-mini',
 });
 ```
 
-## Generating Speech
+## Tạo Giọng Nói
 
-To get a URL with the audio for a generated file using the default settings, call the `generate()` method with the text you wish to convert.
+Để lấy URL với âm thanh cho một tệp đã tạo sử dụng cài đặt mặc định, hãy gọi phương thức `generate()` với văn bản bạn muốn chuyển đổi.
 
 ```javascript
 import * as PlayHT from 'playht';
 
-// Generate audio from text
-const generated = await PlayHT.generate('Computers can speak now!');
+// Tạo âm thanh từ văn bản
+const generated = await PlayHT.generate('Máy tính có thể nói chuyện bây giờ!');
 
-// Grab the generated file URL
+// Lấy URL tệp đã tạo
 const { audioUrl } = generated;
 
-console.log('The url for the audio file is', audioUrl);
+console.log('URL cho tệp âm thanh là', audioUrl);
 ```
 
-The output also contains a `generationId` field and an optional `message` field. `generationId` is a unique identifier for the generation request, which can be used for tracking and referencing the specific generation job. The optional `message` field gives additional information about the generation such as status or error messages.
+Kết quả đầu ra cũng chứa trường `generationId` và trường tùy chọn `message`. `generationId` là một định danh duy nhất cho yêu cầu tạo, có thể được sử dụng để theo dõi và tham chiếu đến công việc tạo cụ thể. Trường tùy chọn `message` cung cấp thông tin bổ sung về việc tạo như thông báo trạng thái hoặc lỗi.
 
-For more speech generation options, see [Generating Speech Options](#generating-speech-options) below.
+Để biết thêm tùy chọn tạo giọng nói, xem [Các Tùy Chọn Tạo Giọng Nói](#các-tùy-chọn-tạo-giọng-nói) bên dưới.
 
-## Streaming Speech
+## Phát Trực Tiếp Giọng Nói
 
-The `stream()` method streams audio from a text. It returns a readable stream where the audio bytes will flow to as soon as they're ready. For example, to use the default settings to convert text into an audio stream and write it into a file:
+Phương thức `stream()` phát trực tiếp âm thanh từ văn bản. Nó trả về một luồng đọc mà các byte âm thanh sẽ chảy vào ngay khi chúng sẵn sàng. Ví dụ, để sử dụng cài đặt mặc định để chuyển đổi văn bản thành luồng âm thanh và ghi nó vào một tệp:
 
 ```javascript
 import * as PlayHT from 'playht';
 import fs from 'fs';
 
-// Create a file stream
+// Tạo một luồng tệp
 const fileStream = fs.createWriteStream('hello-playht.mp3');
 
-// Stream audio from text
-const stream = await PlayHT.stream('This sounds very realistic.');
+// Phát trực tiếp âm thanh từ văn bản
+const stream = await PlayHT.stream('Điều này nghe rất thực tế.');
 
-// Pipe stream into file
+// Đưa luồng vào tệp
 stream.pipe(fileStream);
 ```
 
-The `stream()` method also allows you to stream audio from a text stream input. For example, to convert a text stream into an audio file using the default settings:
+Phương thức `stream()` cũng cho phép bạn phát trực tiếp âm thanh từ đầu vào luồng văn bản. Ví dụ, để chuyển đổi luồng văn bản thành tệp âm thanh sử dụng cài đặt mặc định:
 
 ```javascript
 import * as PlayHT from 'playht';
 import { Readable } from 'stream';
 import fs from 'fs';
 
-// Create a test stream
+// Tạo một luồng thử nghiệm
 const textStream = new Readable({
   read() {
-    this.push('You can stream ');
-    this.push('text right into ');
-    this.push('an audio stream!');
-    this.push(null); // End of data
+    this.push('Bạn có thể phát trực tiếp ');
+    this.push('văn bản trực tiếp vào ');
+    this.push('một luồng âm thanh!');
+    this.push(null); // Kết thúc dữ liệu
   },
 });
 
-// Stream audio from text
+// Phát trực tiếp âm thanh từ văn bản
 const stream = await PlayHT.stream(textStream);
 
-// Create a file stream
+// Tạo một luồng tệp
 const fileStream = fs.createWriteStream('hello-playht.mp3');
 stream.pipe(fileStream);
 ```
 
-For a full example of using the streaming speech from input stream API, see our [ChatGPT Integration Example](packages/gpt-example/README.md).
+Để xem ví dụ đầy đủ về việc sử dụng API phát trực tiếp giọng nói từ luồng đầu vào, hãy xem [Ví dụ Tích hợp ChatGPT](packages/gpt-example/README.md) của chúng tôi.
 
-For more speech generation options, see [Generating Speech Options](#generating-speech-options).
+Để biết thêm các tùy chọn tạo giọng nói, xem [Các Tùy Chọn Tạo Giọng Nói](#các-tùy-chọn-tạo-giọng-nói).
 
-**_Note: For the lowest possible latency, use the streaming API with the `Play3.0-mini` model._**
+**_Lưu ý: Để có độ trễ thấp nhất có thể, hãy sử dụng API phát trực tiếp với mô hình `Play3.0-mini`._**
 
-## Generating Speech Options
+## Các Tùy Chọn Tạo Giọng Nói
 
-All text-to-speech methods above accept an optional `options` parameter. You can use it to generate audio with different voices, AI models, output file formats and much more.
+Tất cả các phương thức chuyển văn bản thành giọng nói ở trên đều chấp nhận tham số tùy chọn `options`. Bạn có thể sử dụng nó để tạo âm thanh với các giọng nói, mô hình AI, định dạng tệp đầu ra khác nhau và nhiều hơn nữa.
 
-The options available will depend on the AI model that synthesizes the selected voice. PlayHT API supports different types of models: `Play3.0-mini`, `PlayHT2.0`, `PlayHT2.0-turbo`, `PlayHT1.0` and `Standard`. For all available options, see the TypeScript type definitions [in the code](packages/playht/src/index.ts).
+Các tùy chọn có sẵn sẽ phụ thuộc vào mô hình AI tổng hợp giọng nói đã chọn. API PlayHT hỗ trợ các loại mô hình khác nhau: `Play3.0-mini`, `PlayHT2.0`, `PlayHT2.0-turbo`, `PlayHT1.0` và `Standard`. Để biết tất cả các tùy chọn có sẵn, hãy xem định nghĩa kiểu TypeScript [trong mã](packages/playht/src/index.ts).
 
-### Play3.0-mini Voices (Recommended)
+### Giọng Nói Play3.0-mini (Khuyên dùng)
 
-Our newest conversational voice AI model with added languages, lowest latency, and instant cloning. Compatible with `PlayHT2.0` and `PlayHT2.0-turbo`, our most reliable and fastest model for streaming.
+Mô hình AI giọng nói hội thoại mới nhất của chúng tôi với thêm nhiều ngôn ngữ, độ trễ thấp nhất và khả năng nhân bản tức thì. Tương thích với `PlayHT2.0` và `PlayHT2.0-turbo`, mô hình đáng tin cậy và nhanh nhất của chúng tôi để phát trực tiếp.
 
-To stream using the `Play3.0-mini` model:
+Để phát trực tiếp sử dụng mô hình `Play3.0-mini`:
 
 ```javascript
 import * as PlayHT from 'playht';
 import fs from 'fs';
 
-// Create a file stream
+// Tạo một luồng tệp
 const fileStream = fs.createWriteStream('play_3.mp3');
 
-// Stream audio from text
-const stream = await PlayHT.stream('Stream realistic voices that say what you want!', {
+// Phát trực tiếp âm thanh từ văn bản
+const stream = await PlayHT.stream('Phát trực tiếp giọng nói thực tế nói những gì bạn muốn!', {
   voiceEngine: 'Play3.0-mini',
   voiceId: 's3://voice-cloning-zero-shot/d9ff78ba-d016-47f6-b0ef-dd630f59414e/female-cs/manifest.json',
   outputFormat: 'mp3',
 });
 
-// Pipe stream into file
+// Đưa luồng vào tệp
 stream.pipe(fileStream);
 ```
 
-### PlayHT 2.0 Voices
+### Giọng Nói PlayHT 2.0
 
-Our newest conversational voice AI model with added emotion direction and instant cloning. Compatible with `PlayHT2.0-turbo`. Supports english only.
+Mô hình AI giọng nói hội thoại mới nhất của chúng tôi với hướng dẫn cảm xúc và khả năng nhân bản tức thì. Tương thích với `PlayHT2.0-turbo`. Chỉ hỗ trợ tiếng Anh.
 
-To generate an audio file using a PlayHT 2.0 voice with emotion and other options:
+Để tạo một tệp âm thanh sử dụng giọng nói PlayHT 2.0 với cảm xúc và các tùy chọn khác:
 
 ```javascript
 import * as PlayHT from 'playht';
 
-const text = 'Am I a conversational voice with options?';
+const text = 'Tôi có phải là một giọng nói hội thoại với các tùy chọn không?';
 
-// Generate audio from text
+// Tạo âm thanh từ văn bản
 const generated = await PlayHT.generate(text, {
   voiceEngine: 'PlayHT2.0',
   voiceId: 's3://peregrine-voices/oliver_narrative2_parrot_saad/manifest.json',
@@ -212,23 +204,23 @@ const generated = await PlayHT.generate(text, {
   styleGuidance: 20,
 });
 
-// Grab the generated file URL
+// Lấy URL tệp đã tạo
 const { audioUrl } = generated;
 
-console.log('The url for the audio file is', audioUrl);
+console.log('URL cho tệp âm thanh là', audioUrl);
 ```
 
-To stream using the `PlayHT2.0-turbo` model:
+Để phát trực tiếp sử dụng mô hình `PlayHT2.0-turbo`:
 
 ```javascript
 import * as PlayHT from 'playht';
 import fs from 'fs';
 
-// Create a file stream
+// Tạo một luồng tệp
 const fileStream = fs.createWriteStream('turbo-playht.mp3');
 
-// Stream audio from text
-const stream = await PlayHT.stream('Stream realistic voices that say what you want!', {
+// Phát trực tiếp âm thanh từ văn bản
+const stream = await PlayHT.stream('Phát trực tiếp giọng nói thực tế nói những gì bạn muốn!', {
   voiceEngine: 'PlayHT2.0-turbo',
   voiceId: 's3://voice-cloning-zero-shot/d9ff78ba-d016-47f6-b0ef-dd630f59414e/female-cs/manifest.json',
   outputFormat: 'mp3',
@@ -236,22 +228,22 @@ const stream = await PlayHT.stream('Stream realistic voices that say what you wa
   styleGuidance: 10,
 });
 
-// Pipe stream into file
+// Đưa luồng vào tệp
 stream.pipe(fileStream);
 ```
 
-### PlayHT 1.0 Voices
+### Giọng Nói PlayHT 1.0
 
-Lifelike voices ideal for expressive and conversational content. Supports english only.
+Giọng nói giống thật lý tưởng cho nội dung biểu cảm và hội thoại. Chỉ hỗ trợ tiếng Anh.
 
-To generate audio with a PlayHT 1.0 voice:
+Để tạo âm thanh với giọng nói PlayHT 1.0:
 
 ```javascript
 import * as PlayHT from 'playht';
 
-const text = 'Options are never enough.';
+const text = 'Các tùy chọn không bao giờ là đủ.';
 
-// Generate audio from text
+// Tạo âm thanh từ văn bản
 const generated = await PlayHT.generate(text, {
   voiceEngine: 'PlayHT1.0',
   voiceId: 'susan',
@@ -261,24 +253,24 @@ const generated = await PlayHT.generate(text, {
   seed: 11,
 });
 
-// Grab the generated file URL
+// Lấy URL tệp đã tạo
 const { audioUrl } = generated;
 
-console.log('The url for the audio file is', audioUrl);
+console.log('URL cho tệp âm thanh là', audioUrl);
 ```
 
-### Standard Voices
+### Giọng Nói Tiêu Chuẩn
 
-For multilingual text-to speech generations, changing pitches, and adding pauses. Voices with reliable outputs and support for Speech Synthesis Markup Language (SSML). Supports 100+ languages.
+Dùng cho tạo giọng nói đa ngôn ngữ, thay đổi cao độ và thêm khoảng dừng. Giọng nói với đầu ra đáng tin cậy và hỗ trợ cho Ngôn ngữ Đánh dấu Tổng hợp Giọng nói (SSML). Hỗ trợ hơn 100 ngôn ngữ.
 
-And an example with standard voice in Spanish:
+Và một ví dụ với giọng nói tiêu chuẩn bằng tiếng Tây Ban Nha:
 
 ```javascript
 import * as PlayHT from 'playht';
 
 const text = 'La inteligencia artificial puede hablar español.';
 
-// Generate audio from text
+// Tạo âm thanh từ văn bản
 const generated = await PlayHT.generate(text, {
   voiceEngine: 'Standard',
   voiceId: 'Mia',
@@ -286,95 +278,95 @@ const generated = await PlayHT.generate(text, {
   speed: 1.2,
 });
 
-// Grab the generated file URL
+// Lấy URL tệp đã tạo
 const { audioUrl } = generated;
 
-console.log('The url for the audio file is', audioUrl);
+console.log('URL cho tệp âm thanh là', audioUrl);
 ```
 
-## Listing Available Voices
+## Liệt Kê Các Giọng Nói Hiện Có
 
-To list all available voices in our platform, including voices you cloned, you can call the `listVoices()` method with no parameters:
+Để liệt kê tất cả các giọng nói có sẵn trong nền tảng của chúng tôi, bao gồm cả các giọng nói bạn đã nhân bản, bạn có thể gọi phương thức `listVoices()` mà không cần tham số:
 
 ```javascript
 import * as PlayHT from 'playht';
 
-// Fetch all available voices
+// Lấy tất cả các giọng nói có sẵn
 const voices = await PlayHT.listVoices();
 
-// Output them to the console.
+// Hiển thị chúng ra console
 console.log(JSON.stringify(voices, null, 2));
 ```
 
-The `listVoices()` method also takes in an optional parameter to filter the voices by different fields. To get all stock female PlayHT 2.0 voices:
+Phương thức `listVoices()` cũng nhận một tham số tùy chọn để lọc giọng nói theo các trường khác nhau. Để lấy tất cả giọng nói nữ có sẵn PlayHT 2.0:
 
 ```javascript
 import * as PlayHT from 'playht';
 
-// Fetch stock female PlayHT 2.0 voices
+// Lấy giọng nói nữ có sẵn PlayHT 2.0
 const voices = await PlayHT.listVoices({
   gender: 'female',
   voiceEngine: ['PlayHT2.0'],
   isCloned: false,
 });
 
-// Output them to the console.
+// Hiển thị chúng ra console
 console.log(JSON.stringify(voices, null, 2));
 ```
 
-## Instant Clone a Voice
+## Nhân Bản Tức Thì Một Giọng Nói
 
-You can use the `clone()` method to create a cloned voice from audio data. The cloned voice is ready to be used straight away.
+Bạn có thể sử dụng phương thức `clone()` để tạo một giọng nói nhân bản từ dữ liệu âm thanh. Giọng nói nhân bản đã sẵn sàng để sử dụng ngay lập tức.
 
 ```javascript
 import * as PlayHT from 'playht';
 import fs from 'fs';
 
-// Load an audio file
+// Tải một tệp âm thanh
 const fileBlob = fs.readFileSync('voice-to-clone.mp3');
 
-// Clone the voice
+// Nhân bản giọng nói
 const clonedVoice = await PlayHT.clone('dolly', fileBlob, 'male');
 
-// Display the cloned voice information in the console
-console.log('Cloned voice info\n', JSON.stringify(clonedVoice, null, 2));
+// Hiển thị thông tin giọng nói nhân bản trong console
+console.log('Thông tin giọng nói nhân bản\n', JSON.stringify(clonedVoice, null, 2));
 
-// Use the cloned voice straight away to generate an audio file
+// Sử dụng giọng nói nhân bản ngay lập tức để tạo một tệp âm thanh
 const fileStream = fs.createWriteStream('hello-dolly.mp3');
-const stream = await PlayHT.stream('Cloned voices sound realistic too.', {
+const stream = await PlayHT.stream('Giọng nói nhân bản cũng nghe thực tế.', {
   voiceEngine: clonedVoice.voiceEngine,
   voiceId: clonedVoice.id,
 });
 stream.pipe(fileStream);
 ```
 
-The `clone()` method can also take in a URL string as input:
+Phương thức `clone()` cũng có thể nhận chuỗi URL làm đầu vào:
 
 ```javascript
 import * as PlayHT from 'playht';
 import fs from 'fs';
 
-// Audio file url
+// URL tệp âm thanh
 const fileUrl = 'https://peregrine-samples.s3.amazonaws.com/peregrine-voice-cloning/Neil-DeGrasse-Tyson-sample.wav';
 
-// Clone the voice
+// Nhân bản giọng nói
 const clonedVoice = await PlayHT.clone('neil', fileUrl, 'male');
 
-// Display the cloned voice information in the console
-console.log('Cloned voice info\n', JSON.stringify(clonedVoice, null, 2));
+// Hiển thị thông tin giọng nói nhân bản trong console
+console.log('Thông tin giọng nói nhân bản\n', JSON.stringify(clonedVoice, null, 2));
 
-// Use the cloned voice straight away to generate an audio file
+// Sử dụng giọng nói nhân bản ngay lập tức để tạo một tệp âm thanh
 const fileStream = fs.createWriteStream('hello-neil.mp3');
-const stream = await PlayHT.stream('Cloned voices are pure science.', {
+const stream = await PlayHT.stream('Giọng nói nhân bản là khoa học thuần túy.', {
   voiceEngine: clonedVoice.voiceEngine,
   voiceId: clonedVoice.id,
 });
 stream.pipe(fileStream);
 ```
 
-### Deleting a Cloned Voice
+### Xóa Một Giọng Nói Đã Nhân Bản
 
-Use the `deleteClone()` method to delete cloned voices.
+Sử dụng phương thức `deleteClone()` để xóa giọng nói đã nhân bản.
 
 ```javascript
 import * as PlayHT from 'playht';
@@ -383,18 +375,18 @@ const cloneId = 's3://voice-cloning-zero-shot/abcdefgh-01d3-4613-asdf-9a8b7774db
 
 const message = await PlayHT.deleteClone(cloneId);
 
-console.log('deleteClone result message is', message);
+console.log('Thông báo kết quả deleteClone là', message);
 ```
 
-Keep in mind, this action cannot be undone.
+Hãy nhớ rằng, hành động này không thể hoàn tác.
 
-# SDK Examples
+# Ví Dụ SDK
 
-This repository contains an implementation example for the API and an example of integrating with ChatGPT API.
+Kho lưu trữ này chứa một ví dụ triển khai cho API và một ví dụ về tích hợp với API ChatGPT.
 
-To authenticate requests for the examples, you need to generate an API Secret Key and get your User ID. If you already have a PlayHT account, navigate to the [API access page](https://play.ht/studio/api-access). For more details [see the API documentation](https://docs.play.ht/reference/api-authentication#generating-your-api-secret-key-and-obtaining-your-user-id).
+Để xác thực yêu cầu cho các ví dụ, bạn cần tạo Khóa Bí Mật API và lấy ID Người Dùng của bạn. Nếu bạn đã có tài khoản PlayHT, hãy điều hướng đến [trang truy cập API](https://play.ht/studio/api-access). Để biết thêm chi tiết [xem tài liệu API](https://docs.play.ht/reference/api-authentication#generating-your-api-secret-key-and-obtaining-your-user-id).
 
-Before running the examples, build the SDK:
+Trước khi chạy các ví dụ, hãy xây dựng SDK:
 
 ```shell
 cd packages/playht
@@ -402,11 +394,11 @@ yarn install
 yarn build
 ```
 
-## Example Server
+## Ví Dụ Máy Chủ
 
-Create a new `.env` file in the `packages/sdk-example` folder by copying the `.env.example` file provided. Then edit the file with your credentials.
+Tạo một tệp `.env` mới trong thư mục `packages/sdk-example` bằng cách sao chép tệp `.env.example` đã cung cấp. Sau đó chỉnh sửa tệp với thông tin xác thực của bạn.
 
-To run it locally:
+Để chạy nó cục bộ:
 
 ```shell
 cd packages/sdk-example
@@ -415,14 +407,14 @@ yarn install:all
 yarn start
 ```
 
-Navigate to http://localhost:3000/ to see the example server.
+Điều hướng đến http://localhost:3000/ để xem máy chủ ví dụ.
 
-## ChatGPT Integration Example
+## Ví Dụ Tích Hợp ChatGPT
 
-Create a new `.env` file in the `packages/gpt-example/server` folder by copying the `.env.example` file provided. Then edit the file with your credentials.
-This example requires your [OpenAI credentials](https://help.openai.com/en/articles/4936850-where-do-i-find-my-secret-api-key) too, the example `.env` file for details.
+Tạo một tệp `.env` mới trong thư mục `packages/gpt-example/server` bằng cách sao chép tệp `.env.example` đã cung cấp. Sau đó chỉnh sửa tệp với thông tin xác thực của bạn.
+Ví dụ này cũng yêu cầu [thông tin xác thực OpenAI](https://help.openai.com/en/articles/4936850-where-do-i-find-my-secret-api-key) của bạn, xem tệp `.env` ví dụ để biết chi tiết.
 
-To run it locally:
+Để chạy nó cục bộ:
 
 ```shell
 cd packages/gpt-example
@@ -431,4 +423,4 @@ yarn install:all
 yarn start
 ```
 
-See the [full ChatGPT Integration Example documentation](packages/gpt-example/README.md).
+Xem [tài liệu đầy đủ về Ví dụ Tích hợp ChatGPT](packages/gpt-example/README.md).

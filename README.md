@@ -1,11 +1,4 @@
 <div align="center">
-  <a href="https://play.ht">
-    <img
-      width="200"
-      alt="playht playai logo"
-      src="https://github.com/user-attachments/assets/c97afbf8-0fe2-4cbb-8d32-9af0ca8901c0"
-    />
-  </a>
 <p></p>
 <p>Nền Tảng Tạo Giọng Nói Bằng Trí Tuệ Nhân Tạo</p>
 
@@ -54,7 +47,6 @@ yarn add playht
 
 Trước khi sử dụng SDK, bạn cần khởi tạo thư viện với thông tin xác thực của bạn. Bạn sẽ cần Khóa Bí Mật API và ID Người Dùng của bạn. Nếu bạn đã có tài khoản PlayHT, hãy điều hướng đến [trang truy cập API](https://play.ht/studio/api-access). Để biết thêm chi tiết [xem tài liệu API](https://docs.play.ht/reference/api-authentication#generating-your-api-secret-key-and-obtaining-your-user-id).
 
-_**Quan trọng:** Giữ bí mật Khóa Bí Mật API của bạn. Không chia sẻ nó với bất kỳ ai hoặc đưa vào kho lưu trữ mã nguồn công khai._
 
 Nhập các phương thức từ thư viện và gọi `init()` với thông tin xác thực của bạn để thiết lập SDK:
 
